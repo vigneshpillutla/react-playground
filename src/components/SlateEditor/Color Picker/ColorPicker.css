@@ -1,0 +1,27 @@
+.color-picker{
+    display: inline;
+    position: relative;
+}
+.color-options{
+    position: absolute;
+    left: 0;
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto auto;
+    align-items: center;
+    background-color: white;
+    padding: 6px 10px;
+    gap: 5px;
+    border: 1px solid lightgray;
+    /* width: 200px; */
+    height: fit-content;
+    z-index: 1;
+    flex-wrap: wrap;
+}
+.clicked{
+  border: 1px solid lightgray;
+  border-bottom: none;
+}
+.option{
+  width: 16px;
+  height: 16px;
+}

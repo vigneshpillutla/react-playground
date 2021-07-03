@@ -29,18 +29,18 @@ const toolbarGroups = [
             type:'mark',
         },
     ],
-    // [
-    //     {
-    //         format:'color',
-    //         type:'dropdown',
-    //         options:[{text:'black',value:'black'},{text:'white',value:'white'},{text:'green',value:'green'},{text:'red',value:'red'},{text:'blue',value:'blue'},{text:'orange',value:'orange'}]
-    //     },
-    //     {
-    //         format:'bgColor',
-    //         type:'dropdown',
-    //         options:[{text:'black',value:'black'},{text:'white',value:'white'},{text:'green',value:'green'},{text:'red',value:'red'},{text:'blue',value:'blue'},{text:'orange',value:'orange'}]
-    //     }
-    // ],
+    [
+        {
+            format:'color',
+            type:'color-picker',
+            options:[{text:'black',value:'black'},{text:'white',value:'white'},{text:'green',value:'green'},{text:'red',value:'red'},{text:'blue',value:'blue'},{text:'orange',value:'orange'}]
+        },
+        {
+            format:'bgColor',
+            type:'color-picker',
+            options:[{text:'black',value:'black'},{text:'white',value:'white'},{text:'green',value:'green'},{text:'red',value:'red'},{text:'blue',value:'blue'},{text:'orange',value:'orange'}]
+        }
+    ],
     [
         {
             format:'superscript',

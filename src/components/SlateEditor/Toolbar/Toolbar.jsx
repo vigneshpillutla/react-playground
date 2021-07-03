@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {useSlate} from 'slate-react'
 import Button from '../common/Button'
 import Icon from '../common/Icon'
-import { toggleBlock, toggleMark, isMarkActive, addMarkData, isBlockActive,activeMark,} from '../utils/SlateUtilityFunctions.js'
+import { toggleBlock, toggleMark, isMarkActive, addMarkData, isBlockActive,activeMark} from '../utils/SlateUtilityFunctions.js'
 import { insertTable, insertCells } from '../utils/table.js'
 import { insertLink, removeLink } from '../utils/link.js'
 import toolbarGroups from './toolbarGroups.js'
@@ -10,7 +10,7 @@ import './styles.css'
 import { Transforms,Element,Range } from 'slate';
 import { Editor } from 'slate';
 import {MdFormatColorText} from 'react-icons/md'
-
+import ColorPicker from '../Color Picker/ColorPicker'
 const Toolbar = ()=>{
     const editor = useSlate();
     const BlockButton = ({format}) =>{
@@ -107,10 +107,6 @@ const Toolbar = ()=>{
 
     return(
         <div className='toolbar'>
-            <div className='color-pick'>
-                <button><MdFormatColorText size={20}/></button>
-                <div className='color-options'></div>
-            </div>
             {
                 toolbarGroups.map(group => 
                     <span className='toolbar-grp'>
@@ -126,6 +122,8 @@ const Toolbar = ()=>{
                                             return <Dropdown {...element} />
                                         case 'link':
                                             return <Link/>
+                                        case 'color-picker':
+                                            return   <ColorPicker activeMark={activeMark} format={element.format} editor={editor}/>
                                         default:
                                             return <button>Invalid Button</button>
                                     }
@@ -139,7 +137,6 @@ const Toolbar = ()=>{
             <button onClick={handleRemoveTable}>Remove Table</button>
             <button onClick={handleInsertRow}>Insert row</button>
             <button onClick={handleInsertColumn}>Insert column</button>
-            
         </div>
     )
 }

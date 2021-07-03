@@ -22,20 +22,3 @@ select{
     border: none;
     width: 6.9rem;
 }
-.color-pick{
-    display: inline;
-    position: relative;
-  }
-.color-options{
-      position: absolute;
-    left: 5px;
-    display: flex;
-    align-items: center;
-    background-color: white;
-    padding: 6px 10px;
-    gap: 10px;
-    border: 1px solid lightgray;
-    width: 200px;
-    height: 50px;
-    z-index: 1;
-  }

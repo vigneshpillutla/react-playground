@@ -54,7 +54,6 @@ export const toggleBlock = (editor,format)=>{
     }
 }
 export const addMarkData = (editor,data)=>{
-
     Editor.addMark(editor,data.format,data.value);
 }
 export const toggleMark = (editor,format)=>{
@@ -84,7 +83,7 @@ export const isBlockActive = (editor,format)=>{
 export const activeMark = (editor,format) =>{
     const defaultMarkData = {
         color:'black',
-        bgColor:'white',
+        bgColor:'black',
         fontSize:'normal',
         fontFamily:'sans'
     } 
