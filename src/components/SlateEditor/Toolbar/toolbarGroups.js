@@ -33,12 +33,11 @@ const toolbarGroups = [
         {
             format:'color',
             type:'color-picker',
-            options:[{text:'black',value:'black'},{text:'white',value:'white'},{text:'green',value:'green'},{text:'red',value:'red'},{text:'blue',value:'blue'},{text:'orange',value:'orange'}]
+            
         },
         {
             format:'bgColor',
             type:'color-picker',
-            options:[{text:'black',value:'black'},{text:'white',value:'white'},{text:'green',value:'green'},{text:'red',value:'red'},{text:'blue',value:'blue'},{text:'orange',value:'orange'}]
         }
     ],
     [
@@ -58,6 +57,10 @@ const toolbarGroups = [
         },
         {
             format:'headingTwo',
+            type:'block',
+        },
+        {
+            format:'headingThree',
             type:'block',
         },
         {

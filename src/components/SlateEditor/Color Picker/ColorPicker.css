@@ -2,26 +2,50 @@
     display: inline;
     position: relative;
 }
+.color-options-wrapper{
+  position: absolute;
+  left: 0;
+  background-color: white;
+  padding: 6px 10px;
+  border: 1px solid lightgray;
+  height: fit-content;
+  z-index: 1;
+  flex-wrap: wrap;
+}
 .color-options{
-    position: absolute;
-    left: 0;
     display: grid;
     grid-template-columns: auto auto auto auto auto auto auto;
     align-items: center;
-    background-color: white;
-    padding: 6px 10px;
     gap: 5px;
-    border: 1px solid lightgray;
-    /* width: 200px; */
-    height: fit-content;
-    z-index: 1;
-    flex-wrap: wrap;
 }
 .clicked{
   border: 1px solid lightgray;
   border-bottom: none;
 }
-.option{
+.option,.hexPreview{
   width: 16px;
   height: 16px;
+  background-color: #000000;
+
+}
+.color-picker form{
+  display: flex;
+  align-items: center;
+  column-gap: 5px;
+  width: 100%;
+}
+.color-picker input{
+  width: 65%;
+  height:1.3em;
+  border:1px solid lightgray;
+  border-radius: 5px;
+  padding-left:5px
+}
+.color-picker button{
+  margin:0;
+  padding:0;
+  cursor: pointer;
+}
+.color-picker input:focus{
+  outline: none;
 }

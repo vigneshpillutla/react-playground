@@ -16,7 +16,7 @@ import unorderedList from '../Toolbar/toolbarIcons/unorderedList.svg'
 import link from '../Toolbar/toolbarIcons/link.svg'
 import unlink from '../Toolbar/toolbarIcons/unlink.svg'
 import { MdFormatBold, MdFormatItalic, MdStrikethroughS, MdFormatUnderlined, MdFormatQuote, MdFormatAlignLeft, MdFormatAlignCenter, MdFormatAlignRight, MdFormatListNumbered, MdFormatListBulleted,MdInsertLink} from 'react-icons/md'
-import { BsTypeH1, BsTypeH2 } from 'react-icons/bs'
+import { BsTypeH1, BsTypeH2, BsTypeH3 } from 'react-icons/bs'
 import { FaSuperscript,FaSubscript } from 'react-icons/fa'
 const iconList={
     bold:<MdFormatBold size={20}/>,
@@ -25,6 +25,8 @@ const iconList={
     underline:<MdFormatUnderlined size={20}/>,
     headingOne:<BsTypeH1 size={20}/>,
     headingTwo:<BsTypeH2 size={20}/>,
+    headingThree:<BsTypeH3 size={20}/>,
+
     blockquote:<MdFormatQuote size={20}/>,
     superscript:<FaSuperscript size={15}/>,
     subscript:<FaSubscript size={15}/>,

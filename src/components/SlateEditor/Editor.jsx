@@ -30,6 +30,8 @@ const Element = (props) =>{
             return <h1 {...attributes}>{children}</h1>
         case 'headingTwo':
             return <h2 {...attributes}>{children}</h2>
+        case 'headingThree':
+            return <h3 {...attributes}>{children}</h3>
         case 'blockquote':
             return <blockquote {...attributes}>{children}</blockquote>
         case 'alignLeft':
@@ -59,7 +61,7 @@ const Element = (props) =>{
     }
 }
 const Leaf = ({ attributes, children, leaf }) => {
-    // console.log(attributes);
+    
     if (leaf.bold) {
       children = <strong>{children}</strong>
     }
