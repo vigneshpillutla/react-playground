@@ -1,4 +1,4 @@
-import { Editor, Range, Point, Descendant, Element, Path } from 'slate'
+import { Editor, Range, Point, Element} from 'slate'
 
 const withTable = (editor) =>{
     const { deleteBackward, deleteForward, insertBreak} = editor
@@ -12,7 +12,6 @@ const withTable = (editor) =>{
                 Element.isElement(n) &&
                 n.type === 'table-cell',
             })
-
             const prevNodePath = Editor.before(editor,selection)
 
             const [tableNode] = Editor.nodes(editor,{
@@ -46,7 +45,6 @@ const withTable = (editor) =>{
           })
           
           const prevNodePath = Editor.after(editor,selection)
-
           const [tableNode] = Editor.nodes(editor,{
             at:prevNodePath,
             match:n =>!Editor.isEditor(n) && Element.isElement && n.type === 'table-cell'

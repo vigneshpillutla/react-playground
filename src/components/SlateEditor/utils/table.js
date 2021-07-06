@@ -1,16 +1,93 @@
-import { Transforms } from 'slate'
+import { Transforms, Editor, Range, Element } from 'slate'
 
-export const insertTable = (editor)=>{
-    const rows = prompt('Enter number of rows ');
-    const columns = prompt('Enter number of columns');
-    if(!rows || !columns){
-        return;
+
+export class TableUtil{
+    constructor(editor){
+        this.editor = editor;
     }
-    const cellText = Array.from({ length: rows }, () => Array.from({ length: columns }, () => ""))
-    const newTable = createTableNode(cellText);
-    Transforms.insertNodes(editor,newTable);
-    Transforms.insertNodes(editor,{type:'paragraph',children:[{text:""}]},{mode:'highest'})
+
+    insertTable = ()=>{
+
+        const [tableNode] = Editor.nodes(this.editor,{
+            match:n => !Editor.isEditor(n) && Element.isElement(n) && n.type === 'table',
+            mode:'highest',
+        })
+        
+        if(tableNode) return;
+
+        const rows = prompt('Enter number of rows ');
+        const columns = prompt('Enter number of columns');
+        if(!rows || !columns){
+            return;
+        }
+        const cellText = Array.from({ length: rows }, () => Array.from({ length: columns }, () => ""))
+        const newTable = createTableNode(cellText);
+        
+    
+    
+        Transforms.insertNodes(this.editor,newTable,{
+            mode:'highest'
+        });
+        Transforms.insertNodes(this.editor,{type:'paragraph',children:[{text:""}]},{mode:'highest'})
+    }
+
+
+    insertCells = (tableNode,path,action)=>{
+        let existingText = Array.from(tableNode.children,(rows) => Array.from(rows.children,(arr) => arr.children[0].text))
+        const columns = existingText[0].length;
+        if(action === 'row'){
+            existingText.push(Array(columns).fill(""));
+        }
+        else{
+            existingText = Array.from(existingText,(item) => {
+                item.push("");
+                return item
+            })
+        }
+        const newTable = createTableNode(existingText)
+        Transforms.insertNodes(this.editor,newTable,{
+            at:path
+        })
+    }
+
+    removeTable = () => {
+        Transforms.removeNodes(this.editor,{
+            match:n=> !Editor.isEditor(n) && Element.isElement(n) && n.type === 'table',
+            mode:'highest'
+        })
+    }
+
+    insertRow = ()=>{
+        const {selection} = this.editor;
+        if(!!selection && Range.isCollapsed(selection)){
+            const [tableNode] = Editor.nodes(this.editor,{
+                match:n => !Editor.isEditor(n) && Element.isElement(n) && n.type === 'table',
+            })
+            if(tableNode){
+                const [oldTable,path] = tableNode
+                this.removeTable();
+                this.insertCells(oldTable,path,'row')
+            }
+        }
+    }
+
+    insertColumn = ()=>{
+        const { selection } = this.editor
+        if(!!selection && Range.isCollapsed(selection)){
+            const [tableNode] = Editor.nodes(this.editor,{
+                match:n => !Editor.isEditor(n) && Element.isElement(n) && n.type === 'table',
+            })
+            if(tableNode){
+                const [oldTable,path] = tableNode
+                this.removeTable();
+                this.insertCells(oldTable,path,'columns')
+            }
+        }
+    }
 }
+
+
+
 
 const createRow = (cellText)=>{
     const newRow = Array.from(cellText,(value)=> createTableCell(value));
@@ -31,23 +108,4 @@ const createTableNode = (cellText)=>{
     const tableChildren = Array.from( cellText,(value) => createRow(value))
     let tableNode = {type:'table',children:tableChildren}
     return tableNode;
-}
-
-export const insertCells = (editor,tableNode,path,action)=>{
-    console.log(tableNode);
-    let existingText = Array.from(tableNode.children,(rows) => Array.from(rows.children,(arr) => arr.children[0].text))
-    const columns = existingText[0].length;
-    if(action === 'row'){
-        existingText.push(Array(columns).fill(""));
-    }
-    else{
-        existingText = Array.from(existingText,(item) => {
-            item.push("");
-            return item
-        })
-    }
-    const newTable = createTableNode(existingText)
-    Transforms.insertNodes(editor,newTable,{
-        at:path
-    })
 }

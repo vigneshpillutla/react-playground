@@ -1,38 +1,25 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {MdFormatColorText, MdFormatColorFill, MdCheck} from 'react-icons/md'
 import './ColorPicker.css'
 import {colors} from './defaultColors.js'
-import { addMarkData,activeMark } from '../utils/SlateUtilityFunctions.js'
+import { addMarkData,activeMark } from '../../utils/SlateUtilityFunctions.js'
 import { Transforms } from 'slate';
+import usePopup  from '../../utils/usePopup'
 
 const logo = {
     color:<MdFormatColorText size={20}/>,
     bgColor:<MdFormatColorFill size={20}/>,
 }
 const ColorPicker = ({format,editor}) =>{
-    const [showOptions,setShowOptions] = useState(false)
     const [selection,setSelection] = useState()
     const [hexValue,setHexValue] = useState('')
     const [validHex,setValidHex] = useState();
-    const colorPickerRef = useRef();
-    
-    useEffect(()=>{
-        document.addEventListener('click',handleDocumentClick)
-        return () =>{
+    const colorPickerRef = useRef(null);
+    const [showOptions,setShowOptions] = usePopup(colorPickerRef)
 
-            document.removeEventListener('click',handleDocumentClick);
-        }
-        
-    },[])
     const isValideHexSix = new RegExp('^#[0-9A-Za-z]{6}')
     const isValideHexThree = new RegExp('^#[0-9A-Za-z]{3}')
 
-    const handleDocumentClick = (e)=>{
-        const clickedComponent = e.target;
-        if(!colorPickerRef?.current?.contains(clickedComponent)){
-            setShowOptions(false);
-        }
-    }
     const changeColor = (e) =>{
         const clickedColor = e.target.getAttribute("data-value");
         selection && Transforms.select(editor,selection)
@@ -42,7 +29,6 @@ const ColorPicker = ({format,editor}) =>{
     }
     const toggleOption = ()=>{
         setSelection(editor.selection);
-        selection && Transforms.select(editor,selection)
         setShowOptions(prev => !prev)
     }
     const handleFormSubmit = (e)=>{
@@ -63,10 +49,10 @@ const ColorPicker = ({format,editor}) =>{
         setHexValue(newHex);
     }
     return (
-        <div className='color-picker'ref={colorPickerRef}>
+        <div className='color-picker popup-wrapper'ref={colorPickerRef}>
             <button style={{color:showOptions?'black':activeMark(editor,format),opacity:'1'}} className={showOptions?'clicked':''} onClick={toggleOption}>{logo[format]}</button>
             {showOptions &&
-                <div className='color-options-wrapper'>
+                <div className='popup'>
                     <div className='color-options'>
                         {
                             colors.map((color, index) => {

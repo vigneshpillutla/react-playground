@@ -1,23 +1,8 @@
 import React from 'react';
-import bold from '../Toolbar/toolbarIcons/bold.png'
-import italic from '../Toolbar/toolbarIcons/italic.png'
-import strikethrough from '../Toolbar/toolbarIcons/strikethrough.png'
-import underline from '../Toolbar/toolbarIcons/underline.png'
-import headingOne from '../Toolbar/toolbarIcons/headingOne.svg'
-import headingTwo from '../Toolbar/toolbarIcons/headingTwo.svg'
-import blockquote from '../Toolbar/toolbarIcons/blockquote.svg'
-import superscript from '../Toolbar/toolbarIcons/superscript.svg'
-import subscript from '../Toolbar/toolbarIcons/subscript.svg'
-import alignLeft from '../Toolbar/toolbarIcons/align-left.svg'
-import alignCenter from '../Toolbar/toolbarIcons/align-center.svg'
-import alignRight from '../Toolbar/toolbarIcons/align-right.svg'
-import orderedList from '../Toolbar/toolbarIcons/orderedList.svg'
-import unorderedList from '../Toolbar/toolbarIcons/unorderedList.svg'
-import link from '../Toolbar/toolbarIcons/link.svg'
-import unlink from '../Toolbar/toolbarIcons/unlink.svg'
-import { MdFormatBold, MdFormatItalic, MdStrikethroughS, MdFormatUnderlined, MdFormatQuote, MdFormatAlignLeft, MdFormatAlignCenter, MdFormatAlignRight, MdFormatListNumbered, MdFormatListBulleted,MdInsertLink} from 'react-icons/md'
+import { MdFormatBold, MdFormatItalic, MdStrikethroughS, MdFormatUnderlined, MdFormatQuote, MdFormatAlignLeft, MdFormatAlignCenter, MdFormatAlignRight, MdFormatListNumbered, MdFormatListBulleted,MdInsertLink,MdVideoLibrary,MdImage,MdAdd} from 'react-icons/md'
 import { BsTypeH1, BsTypeH2, BsTypeH3 } from 'react-icons/bs'
 import { FaSuperscript,FaSubscript } from 'react-icons/fa'
+import { AiOutlineTable, AiOutlineInsertRowBelow, AiOutlineInsertRowRight,AiOutlineDelete } from 'react-icons/ai'
 const iconList={
     bold:<MdFormatBold size={20}/>,
     italic:<MdFormatItalic size={20}/>,
@@ -36,6 +21,13 @@ const iconList={
     orderedList:<MdFormatListNumbered size={20}/>,
     unorderedList:<MdFormatListBulleted size={20}/>,
     link:<MdInsertLink size={20}/>,
+    image:<MdImage size={20}/>,
+    video:<MdVideoLibrary size={20}/>,
+    add:<MdAdd size={20}/>,
+    table:<AiOutlineTable size={20}/>,
+    row:<AiOutlineInsertRowBelow size={20}/>,
+    column:<AiOutlineInsertRowRight size={20}/>,
+    removeTable:<AiOutlineDelete size={20}/>
 }
 
 
@@ -45,7 +37,6 @@ const Icon = (props)=>{
     const {icon} = props
     return(
         iconList[icon]
-        // <img  src={iconList[icon]} alt="" style={{height:'100%',width:'100%'}} />
     )
 }
 

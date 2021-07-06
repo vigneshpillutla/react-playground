@@ -1,17 +1,4 @@
-.color-picker{
-    display: inline;
-    position: relative;
-}
-.color-options-wrapper{
-  position: absolute;
-  left: 0;
-  background-color: white;
-  padding: 6px 10px;
-  border: 1px solid lightgray;
-  height: fit-content;
-  z-index: 1;
-  flex-wrap: wrap;
-}
+
 .color-options{
     display: grid;
     grid-template-columns: auto auto auto auto auto auto auto;

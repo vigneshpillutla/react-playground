@@ -1,18 +1,32 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {useSlate} from 'slate-react'
 import Button from '../common/Button'
 import Icon from '../common/Icon'
 import { toggleBlock, toggleMark, isMarkActive, addMarkData, isBlockActive,activeMark} from '../utils/SlateUtilityFunctions.js'
-import { insertTable, insertCells } from '../utils/table.js'
-import { insertLink, removeLink } from '../utils/link.js'
-import toolbarGroups from './toolbarGroups.js'
+import useTable from '../utils/useTable.js'
+import defaultToolbarGroups from './toolbarGroups.js'
 import './styles.css'
-import { Transforms,Element,Range } from 'slate';
-import { Editor } from 'slate';
-import {MdFormatColorText} from 'react-icons/md'
-import ColorPicker from '../Color Picker/ColorPicker'
+import ColorPicker from '../Elements/Color Picker/ColorPicker'
+import LinkButton from '../Elements/Link/LinkButton'
+import Embed from '../Elements/Embed/Embed'
+import Table from '../Elements/Table/Table'
 const Toolbar = ()=>{
     const editor = useSlate();
+    const isTable = useTable(editor);
+    const [toolbarGroups,setToolbarGroups] = useState(defaultToolbarGroups);
+    useEffect(()=>{
+        let filteredGroups = [...defaultToolbarGroups]
+        if(isTable){
+            filteredGroups = toolbarGroups.map(grp =>(
+                grp.filter(element => (
+                    element.type !== 'block'
+                ))
+            ))
+            filteredGroups = filteredGroups.filter(elem => elem.length)
+        }
+        setToolbarGroups(filteredGroups);
+         // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[isTable])
     const BlockButton = ({format}) =>{
         return (
             <Button active={isBlockActive(editor,format)} format={format} onMouseDown={
@@ -41,23 +55,11 @@ const Toolbar = ()=>{
         return (
             <select value={activeMark(editor,format)} onChange = {e => changeMarkData(e,format)}>
                 {
-                    options.map(item => 
-                        <option value={item.value}>{item.text}</option>
+                    options.map((item,index) => 
+                        <option key={index} value={item.value}>{item.text}</option>
                     )
                 }
             </select>
-        )
-    }
-    const Link = ()=>{
-        return (
-            <Button active={isMarkActive(editor,'link')} title={'link'} onMouseDown={
-                e=>{
-                    e.preventDefault();
-                    handleInsertLink();
-                }
-            }>
-                <Icon icon='link'/>
-            </Button>
         )
     }
     const changeMarkData = (event,format)=>{
@@ -65,65 +67,30 @@ const Toolbar = ()=>{
         const value =event.target.value
         addMarkData(editor,{format,value})
     }
-    const handleInsertLink = ()=>{
-        const url = prompt('Enter URL');
-        insertLink(editor,url)
-    }
-    const handleInsertTable = ()=>{
-        insertTable(editor);
-    }
-    const handleRemoveTable = ()=>{
-        Transforms.removeNodes(editor,{
-            match:n=> !Editor.isEditor(n) && Element.isElement(n) && n.type === 'table',
-            mode:'highest'
-        })
-    }
-    const handleInsertRow = ()=>{
-        const {selection} = editor
-        if(!!selection && Range.isCollapsed(selection)){
-            const [tableNode] = Editor.nodes(editor,{
-                match:n => !Editor.isEditor(n) && Element.isElement(n) && n.type === 'table'
-            })
-            if(tableNode){
-                const [oldTable,path] = tableNode
-                handleRemoveTable();
-                insertCells(editor,oldTable,path,'row')
-            }
-        }
-    }
-    const handleInsertColumn = ()=>{
-        const {selection} = editor
-        if(!!selection && Range.isCollapsed(selection)){
-            const [tableNode] = Editor.nodes(editor,{
-                match:n => !Editor.isEditor(n) && Element.isElement(n) && n.type === 'table'
-            })
-            if(tableNode){
-                const [oldTable,path] = tableNode
-                handleRemoveTable();
-                insertCells(editor,oldTable,path,'columns')
-            }
-        }
-    }
 
     return(
         <div className='toolbar'>
             {
-                toolbarGroups.map(group => 
-                    <span className='toolbar-grp'>
+                toolbarGroups.map((group,index) => 
+                    <span key={index} className='toolbar-grp'>
                         {
-                            group.map(element => 
+                            group.map((element) => 
                                 {
                                     switch (element.type) {
                                         case 'block' :
-                                            return <BlockButton {...element}/>
+                                            return <BlockButton key={element.id} {...element}/>
                                         case 'mark':
-                                            return <MarkButton {...element}/>
+                                            return <MarkButton key={element.id} {...element}/>
                                         case 'dropdown':
-                                            return <Dropdown {...element} />
+                                            return <Dropdown key={element.id} {...element} />
                                         case 'link':
-                                            return <Link/>
+                                            return <LinkButton key={element.id} active={isBlockActive(editor,'link')} editor={editor}/>
+                                        case 'embed':
+                                            return <Embed key={element.id} format={element.format} editor={editor} />
                                         case 'color-picker':
-                                            return   <ColorPicker activeMark={activeMark} format={element.format} editor={editor}/>
+                                            return <ColorPicker key={element.id} activeMark={activeMark} format={element.format} editor={editor}/>
+                                        case 'table':
+                                            return <Table key={element.id} editor={editor}/>
                                         default:
                                             return <button>Invalid Button</button>
                                     }
@@ -133,10 +100,6 @@ const Toolbar = ()=>{
                     </span>    
                 )
             }
-            <button onClick={handleInsertTable}>Insert table</button>
-            <button onClick={handleRemoveTable}>Remove Table</button>
-            <button onClick={handleInsertRow}>Insert row</button>
-            <button onClick={handleInsertColumn}>Insert column</button>
         </div>
     )
 }

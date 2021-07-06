@@ -9,13 +9,9 @@ blockquote{
 table, th, td {
     border: 1px solid black;
 }
-/* ul li::before {content: "•"; color: red;
-    display: inline-block; width: 1em;
-    margin-left: -1em,
-} */
-/* li{
-    list-style-type: none;
-} */
+table{
+    border-collapse: collapse;
+}
 button{
     background-color: white;
     border:none;
@@ -39,4 +35,21 @@ table{
 td{
     height: 50px;
     padding:0 5px;
+}
+.popup-wrapper{
+    display: inline;
+    position: relative;
+}
+.popup{
+    position: absolute;
+    left: 0;
+    background-color: white;
+    padding: 6px 10px;
+    border: 1px solid lightgray;
+    height: fit-content;
+    z-index: 1;
+
+}
+button{
+    cursor: pointer;
 }

@@ -1,30 +1,22 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Editor,createEditor, Transforms,Text, Mark , Element as SlateElement} from 'slate';
+import React, { useCallback, useMemo, useState } from 'react';
+import { createEditor } from 'slate';
+import { withHistory } from "slate-history";
 import {Slate, Editable, withReact } from 'slate-react';
 import Toolbar from './Toolbar/Toolbar'
 import { sizeMap, fontFamilyMap } from './utils/SlateUtilityFunctions.js'
 import withLinks from './plugins/withLinks.js'
 import withTables from './plugins/withTable.js'
+import withEmbeds from './plugins/withEmbeds.js'
 import './Editor.css'
-import Link from'./Link/Link'
+import Link from'./Elements/Link/Link'
+import Image from './Elements/Image/Image'
+import Video from './Elements/Video/Video'
 
-const ChildrenLeaf = ()=>{
-    return (
-        <span data-slate-node="text"><span data-slate-leaf="true"><span data-slate-string="true">First line of text in Slate JS. </span></span></span>
-    )
-}
-const Table = ({attributes,element,children})=>{
-    return(
-        <table>
-            <tbody {...attributes}>
-               {children}
-            </tbody>
-        </table>
-    )
-}
+
 const Element = (props) =>{
-    // console.log(attributes);
+
     const {attributes, children, element} = props;
+    
     switch(element.type){
         case 'headingOne':
             return <h1 {...attributes}>{children}</h1>
@@ -35,11 +27,11 @@ const Element = (props) =>{
         case 'blockquote':
             return <blockquote {...attributes}>{children}</blockquote>
         case 'alignLeft':
-            return <p style={{textAlign:'left',listStylePosition:'inside'}} {...attributes}>{children}</p>
+            return <div style={{textAlign:'left',listStylePosition:'inside'}} {...attributes}>{children}</div>
         case 'alignCenter':
-            return <p style={{textAlign:'center',listStylePosition:'inside'}} {...attributes}>{children}</p>
+            return <div style={{textAlign:'center',listStylePosition:'inside'}} {...attributes}>{children}</div>
         case 'alignRight':
-            return <p style={{textAlign:'right',listStylePosition:'inside'}} {...attributes}>{children}</p>
+            return <div style={{textAlign:'right',listStylePosition:'inside'}} {...attributes}>{children}</div>
         case 'list-item':
             return  <li {...attributes}>{children}</li>
         case 'orderedList':
@@ -48,14 +40,19 @@ const Element = (props) =>{
             return <ul {...attributes}>{children}</ul>
         case 'link':
             return <Link {...props}/>
+       
         case 'table':
-            return <table >
+            return <table>
                 <tbody {...attributes}>{children}</tbody>
             </table>
         case 'table-row':
             return <tr {...attributes}>{children}</tr>
         case 'table-cell':
             return <td {...attributes}>{children}</td>
+        case 'image':
+            return <Image {...props}/>
+        case 'video':
+            return <Video {...props}/>
         default :
             return <p {...attributes}>{children}</p>
     }
@@ -102,7 +99,7 @@ const Leaf = ({ attributes, children, leaf }) => {
     return <span {...attributes}>{children}</span>
 }
 const SlateEditor = ()=>{
-    const editor = useMemo(() => withTables(withLinks(withReact(createEditor()))), []);
+    const editor = useMemo(() => withHistory(withEmbeds(withTables(withLinks(withReact(createEditor()))))), []);
     
     const [value,setValue] = useState([
         {
