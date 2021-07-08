@@ -10,10 +10,10 @@ const Link = ({ attributes, element, children}) => {
     const focused = useFocused();
     return (
         <div className='link' >
-            <a href={element.href} {...attributes}>{children}</a>
+            <a href={element.href} {...attributes} {...element.attr} target={element.target}>{children}</a>
             {selected && focused && (
-                <div className='link-popup' contentEditable='false'>
-                    <a href={element.href}>{element.href}</a>
+                <div className='link-popup' contentEditable={false}>
+                    <a href={element.href} target={element.target}>{element.href}</a>
                     <button onClick={()=>removeLink(editor)}><img src={unlink} alt="" /></button>
                 </div>
             )}

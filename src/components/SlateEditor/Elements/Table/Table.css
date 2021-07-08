@@ -6,3 +6,13 @@
 .table-option{
     white-space: nowrap;
 }
+.table-input{
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto;
+    gap: 3px;
+}
+.table-unit{
+    width:15px;
+    height:15px;
+    border: 1px solid lightgray;
+}

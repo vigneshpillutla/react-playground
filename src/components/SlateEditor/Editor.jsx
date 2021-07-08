@@ -7,11 +7,13 @@ import { sizeMap, fontFamilyMap } from './utils/SlateUtilityFunctions.js'
 import withLinks from './plugins/withLinks.js'
 import withTables from './plugins/withTable.js'
 import withEmbeds from './plugins/withEmbeds.js'
+import withEquation from './plugins/withEquation.js'
 import './Editor.css'
 import Link from'./Elements/Link/Link'
 import Image from './Elements/Image/Image'
 import Video from './Elements/Video/Video'
-
+import Equation from './Elements/Equation/Equation'
+import { InlineMath, BlockMath } from 'react-katex';
 
 const Element = (props) =>{
 
@@ -19,21 +21,21 @@ const Element = (props) =>{
     
     switch(element.type){
         case 'headingOne':
-            return <h1 {...attributes}>{children}</h1>
+            return <h1 {...attributes} {...element.attr}>{children}</h1>
         case 'headingTwo':
-            return <h2 {...attributes}>{children}</h2>
+            return <h2 {...attributes} {...element.attr}>{children}</h2>
         case 'headingThree':
-            return <h3 {...attributes}>{children}</h3>
+            return <h3 {...attributes} {...element.attr}>{children}</h3>
         case 'blockquote':
-            return <blockquote {...attributes}>{children}</blockquote>
+            return <blockquote {...attributes} {...element.attr}>{children}</blockquote>
         case 'alignLeft':
-            return <div style={{textAlign:'left',listStylePosition:'inside'}} {...attributes}>{children}</div>
+            return <div style={{listStylePosition:'inside'}} {...attributes} {...element.attr}>{children}</div>
         case 'alignCenter':
-            return <div style={{textAlign:'center',listStylePosition:'inside'}} {...attributes}>{children}</div>
+            return <div style={{display:'flex',justifyContent:'center',listStylePosition:'inside'}} {...attributes} {...element.attr}>{children}</div>
         case 'alignRight':
-            return <div style={{textAlign:'right',listStylePosition:'inside'}} {...attributes}>{children}</div>
+            return <div style={{display:'flex',justifyContent:'flex-end',listStylePosition:'inside'}} {...attributes} {...element.attr}>{children}</div>
         case 'list-item':
-            return  <li {...attributes}>{children}</li>
+            return  <li {...attributes} {...element.attr}>{children}</li>
         case 'orderedList':
             return <ol type='1' {...attributes}>{children}</ol>
         case 'unorderedList':
@@ -48,13 +50,15 @@ const Element = (props) =>{
         case 'table-row':
             return <tr {...attributes}>{children}</tr>
         case 'table-cell':
-            return <td {...attributes}>{children}</td>
+            return <td {...element.attr} {...attributes}>{children}</td>
         case 'image':
             return <Image {...props}/>
         case 'video':
             return <Video {...props}/>
+        case 'equation':
+            return <Equation {...props}/>
         default :
-            return <p {...attributes}>{children}</p>
+            return <div {...element.attr} {...attributes}>{children}</div>
     }
 }
 const Leaf = ({ attributes, children, leaf }) => {
@@ -99,7 +103,7 @@ const Leaf = ({ attributes, children, leaf }) => {
     return <span {...attributes}>{children}</span>
 }
 const SlateEditor = ()=>{
-    const editor = useMemo(() => withHistory(withEmbeds(withTables(withLinks(withReact(createEditor()))))), []);
+    const editor = useMemo(() => withEquation(withHistory(withEmbeds(withTables(withLinks(withReact(createEditor())))))), []);
     
     const [value,setValue] = useState([
         {

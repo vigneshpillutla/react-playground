@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {useSlate} from 'slate-react'
+import {Range} from 'slate'
 import Button from '../common/Button'
 import Icon from '../common/Icon'
 import { toggleBlock, toggleMark, isMarkActive, addMarkData, isBlockActive,activeMark} from '../utils/SlateUtilityFunctions.js'
@@ -10,6 +11,9 @@ import ColorPicker from '../Elements/Color Picker/ColorPicker'
 import LinkButton from '../Elements/Link/LinkButton'
 import Embed from '../Elements/Embed/Embed'
 import Table from '../Elements/Table/Table'
+import InTable from '../Elements/Table/InTable'
+import EquationButton from '../Elements/Equation/EquationButton'
+import Id from '../Elements/ID/Id'
 const Toolbar = ()=>{
     const editor = useSlate();
     const isTable = useTable(editor);
@@ -19,7 +23,7 @@ const Toolbar = ()=>{
         if(isTable){
             filteredGroups = toolbarGroups.map(grp =>(
                 grp.filter(element => (
-                    element.type !== 'block'
+                    !['table'].includes(element.type)
                 ))
             ))
             filteredGroups = filteredGroups.filter(elem => elem.length)
@@ -91,6 +95,12 @@ const Toolbar = ()=>{
                                             return <ColorPicker key={element.id} activeMark={activeMark} format={element.format} editor={editor}/>
                                         case 'table':
                                             return <Table key={element.id} editor={editor}/>
+                                        case 'inTable':
+                                            return isTable ? <InTable key={element.id} editor={editor}/> : null
+                                        case 'id':
+                                            return <Id editor={editor}/>
+                                        case 'equation':
+                                            return <EquationButton editor={editor}/>
                                         default:
                                             return <button>Invalid Button</button>
                                     }

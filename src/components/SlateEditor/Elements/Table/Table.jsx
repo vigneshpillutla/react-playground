@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Icon from '../../common/Icon'
 import usePopup from '../../utils/usePopup'
 import { Transforms } from 'slate';
@@ -9,56 +9,54 @@ const Table = ({editor})=>{
     const tableOptionsRef = useRef();
     const [selection,setSelection] = useState()
     const [showOptions,setShowOptions] = usePopup(tableOptionsRef);
-    
+    const [tableData,setTableData] = useState({
+        row:0,
+        column:0,
+    })
+    const [tableInput,setTableInput] =useState(Array.from({length:6},()=> Array.from ({length:6},(v,i)=>({
+        bg:'lightGray',
+        column:i,
+    }))))
+
+    useEffect(()=>{
+        const newTable = Array.from({length:6},(obj,row)=> Array.from({length:6},(v,col)=>({
+            bg:row+1<=tableData.row && col+1<=tableData.column ? 'orange':'lightgray',
+            column:col,
+        })))
+        setTableInput(newTable)
+    },[tableData])
     const table = new TableUtil(editor);
 
     const handleButtonClick = ()=>{
         setSelection(editor.selection);
         setShowOptions(prev => !prev)
     }
-    const handleOption = (action) =>{
+    const handleInsert = () =>{
         selection && Transforms.select(editor,selection)
-        switch(action){
-            case 'insertTable':
-                table.insertTable();
-                break;
-            case 'insertRow':
-                table.insertRow();
-                break;
-            case 'insertColumn':
-                table.insertColumn();
-                break;
-            case 'removeTable':
-                table.removeTable();
-                break;
-            default:
-                return;
-        }
+        setTableData({row:-1,column:-1})
+        table.insertTable(tableData.row,tableData.column)
         setShowOptions(false)
     }
     return (
-        <div ref={tableOptionsRef} className='popup-wrapper'>
+        <div ref={tableOptionsRef} className='popup-wrapper'  >
             <button  style={{border: showOptions?'1px solid lightgray':'none'}}  title='table' onClick={handleButtonClick}>
                 <Icon icon='table'/>
             </button>
             {
-                showOptions&&
-                <div  className='popup'>
-                    <div className='table-option' onClick={()=>handleOption('insertTable')}>
-                        <Icon icon='table'/>
-                        <span>Insert Table</span>
-                    </div>
-                    <div className='table-option' onClick={()=>handleOption('insertRow')}>
-                        <Icon icon='row'/>
-                        <span>Insert Row</span>
-                    </div>
-                    <div className='table-option' onClick={()=>handleOption('insertColumn')}>
-                        <Icon icon='column'/>
-                        <span>Insert Column</span>
-                    </div>
-                    <div className='table-option' onClick={()=>handleOption('removeTable')}>
-                        <Icon icon='removeTable'/>
-                        <span>Remove Table</span>
+                showOptions &&
+                <div  className='popup' >
+                    {
+                        tableData.row>=1 &&
+                        <div><i>{`${tableData.row} x ${tableData.column}`}</i></div>
+                    }
+                    <div className='table-input'>
+                        {
+                            tableInput.map((grp,row)=>
+                                grp.map(({column,bg})=>
+                                    <div  onClick={()=>handleInsert()} onMouseOver={()=>setTableData({row:row+1,column:column+1})} className='table-unit' style={{border:`1px solid ${bg}`}}></div>
+                                )
+                            )
+                        }
                     </div>
                 </div>
             }

@@ -10,6 +10,7 @@ const Image = ({ attributes, element, children }) => {
       {...attributes}
       className='element-video'
       style={{display:'flex',justifyContent:'center'}}
+      {...element.attr}
     >
       <div contentEditable={false} style={{width:width,height:height}}>
         <div className='video-wrapper'>

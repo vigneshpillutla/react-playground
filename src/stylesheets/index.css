@@ -11,3 +11,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+[data-slate-node="element"] {
+  margin: 10px 0;
+}
+html{
+  scroll-behavior: smooth;
+}

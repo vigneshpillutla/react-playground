@@ -132,6 +132,22 @@ const toolbarGroups = [
             type:'table'
         }
     ],
+    [
+        {
+            id:24,
+            type:'inTable'
+        }
+    ],
+    [
+        {
+            id:25,
+            type:'id'
+        },
+        {
+            id:26,
+            type:'equation'
+        }
+    ],
 
 
 

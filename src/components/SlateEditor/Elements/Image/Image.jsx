@@ -11,7 +11,8 @@ const Image = ({ attributes, element, children }) => {
     <div
       {...attributes}
       className='element-image'
-      style={{display:'flex',justifyContent:'center',boxShadow: selected && focused &&  '0 0 3px 3px lightgray'}}
+      style={{display:'flex',boxShadow: selected && focused &&  '0 0 3px 3px lightgray'}}
+      {...element.attr}
     >
       <div contentEditable={false} style={{width:width,height:height}}>
         <img alt={element.alt} src={url}/>

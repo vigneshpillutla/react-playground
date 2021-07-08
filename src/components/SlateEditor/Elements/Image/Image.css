@@ -1,5 +1,5 @@
 .element-image{
-    width: 100%;
+    width: fit-content;
 }
 .element-image img{
     width: 100%;

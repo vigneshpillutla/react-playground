@@ -1,18 +1,19 @@
 import { Editor, Transforms, Path, Range, Element } from 'slate';
 
-export const createLinkNode = (href,text) =>(
+export const createLinkNode = (href,showInNewTab,text) =>(
     {
         type:'link',
         href,
+        target:showInNewTab ? '_blank': '_self',
         children:[{ text }]
     }
 )
 
-export const insertLink = (editor,url)=>{
+export const insertLink = (editor,{url,showInNewTab})=>{
     if(!url) return;
 
     const { selection } = editor;
-    const link = createLinkNode(url,'Link');
+    const link = createLinkNode(url,showInNewTab,'Link');
     if(!!selection){
         const [parent, parentPath] = Editor.parent(editor,selection.focus.path);
         if(parent.type === 'link'){

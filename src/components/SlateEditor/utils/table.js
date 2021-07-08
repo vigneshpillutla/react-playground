@@ -6,7 +6,7 @@ export class TableUtil{
         this.editor = editor;
     }
 
-    insertTable = ()=>{
+    insertTable = (rows,columns)=>{
 
         const [tableNode] = Editor.nodes(this.editor,{
             match:n => !Editor.isEditor(n) && Element.isElement(n) && n.type === 'table',
@@ -14,9 +14,6 @@ export class TableUtil{
         })
         
         if(tableNode) return;
-
-        const rows = prompt('Enter number of rows ');
-        const columns = prompt('Enter number of columns');
         if(!rows || !columns){
             return;
         }
@@ -97,10 +94,13 @@ const createRow = (cellText)=>{
     };
 }
 
-const createTableCell = (text)=>{
+export const createTableCell = (text)=>{
     return {
         type:'table-cell',
-        children:[ { text } ]
+        children:[ {
+            type:'paragraph',
+            children:[{text}]
+        } ]
     }
 }
 

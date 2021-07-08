@@ -1,4 +1,7 @@
 import { Editor, Transforms,Element as SlateElement} from 'slate'
+import useTable from '../utils/useTable.js'
+import {useSlateStatic} from 'slate-react'
+import {createTableCell} from '../utils/table.js'
 
 const alignment = ['alignLeft','alignRight','alignCenter']
 const list_types = ['orderedList','unorderedList']
@@ -13,7 +16,7 @@ export const fontFamilyMap = {
     serif:'Georgia, Times New Roaman,serif',
     monospace:'Monaco, Courier New,monospace'
 }
-export const toggleBlock = (editor,format)=>{
+export const toggleBlock = (editor,format)=>{   
     const isActive = isBlockActive(editor,format);
     const isList = list_types.includes(format)
     const isIndent = alignment.includes(format)
@@ -42,16 +45,24 @@ export const toggleBlock = (editor,format)=>{
         match:n => list_types.includes(!Editor.isEditor(n) && SlateElement.isElement(n) && n.type),
         split:true
     })
-    
+   
+
+
     Transforms.setNodes(editor,{
         type:isActive?'paragraph':isList?'list-item':format,
     })
+
+   
     if(isList && !isActive){
         Transforms.wrapNodes(editor,{
             type:format,
             children:[]
         })
     }
+
+    
+    
+    
 }
 export const addMarkData = (editor,data)=>{
     Editor.addMark(editor,data.format,data.value);
