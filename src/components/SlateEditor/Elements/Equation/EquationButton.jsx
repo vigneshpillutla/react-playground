@@ -1,7 +1,7 @@
 import {useRef, useState} from 'react'
 import Button from '../../common/Button'
 import Icon from '../../common/Icon'
-import usePopup  from '../../utils/usePopup'
+import usePopup  from '../../utils/customHooks/usePopup'
 import {insertEquation} from '../../utils/equation.js'
 import { Transforms } from 'slate'
 

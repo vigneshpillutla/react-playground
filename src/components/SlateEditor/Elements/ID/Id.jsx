@@ -2,7 +2,7 @@ import {Range, Editor, Transforms} from 'slate';
 import React, {useRef, useState} from 'react';
 import Button from '../../common/Button'
 import Icon from '../../common/Icon'
-import usePopup from '../../utils/usePopup';
+import usePopup from '../../utils/customHooks/usePopup';
 const Id = ({editor})=>{
     const idInputRef = useRef(null);
     const [showInput,setShowInput] = usePopup(idInputRef);

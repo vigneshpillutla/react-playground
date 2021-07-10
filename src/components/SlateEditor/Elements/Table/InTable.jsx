@@ -9,10 +9,10 @@ const InTable = ({editor})=>{
     const handleButtonClick = (action)=>{
         switch(action){
             case 'row':
-                table.insertRow();
+                table.insertRow('after');
                 break;
             case 'column':
-                table.insertColumn();
+                table.insertColumn('after');
                 break;
             case 'remove':
                 table.removeTable();

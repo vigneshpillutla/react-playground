@@ -2,38 +2,38 @@ import React, {useRef, useState} from 'react';
 import Button from '../../common/Button'
 import Icon from '../../common/Icon'
 import {isBlockActive} from '../../utils/SlateUtilityFunctions'
-import usePopup from '../../utils/usePopup'
+import usePopup from '../../utils/customHooks/usePopup'
 import {insertEmbed } from '../../utils/embed.js'
 import { Transforms } from 'slate';
-import useTable from '../../utils/useTable.js'
+import {ReactEditor} from 'slate-react'
 
+import './Embed.css'
 const Embed = ({editor,format}) =>{
     const urlInputRef = useRef();
     const [showInput,setShowInput] = usePopup(urlInputRef);
     const [formData,setFormData] = useState({
         url:'',
-        width:'',
-        height:''
+        alt:''
     })
     const [selection,setSelection] = useState();
-    const isTable = useTable(editor);
     const handleButtonClick = (e)=>{
         e.preventDefault();
         setSelection(editor.selection);
+        selection && ReactEditor.focus(editor);
+
         setShowInput(prev =>!prev);
     }
     const handleFormSubmit = (e)=>{
         e.preventDefault();
-        if(!isTable){
 
-            selection && Transforms.select(editor,selection);
-        }
+        selection && Transforms.select(editor,selection);
+        selection && ReactEditor.focus(editor);
+
         insertEmbed(editor,{...formData},format);
         setShowInput(false);
         setFormData({
             url:'',
-            width:'',
-            height:''
+            alt:''
         })
     }
     const handleImageUpload = ()=>{
@@ -60,8 +60,8 @@ const Embed = ({editor,format}) =>{
                     }
                     <form onSubmit={handleFormSubmit}>
                         <input type="text" placeholder='Enter url' value={formData.url} onChange={e=>setFormData(prev =>({...prev,url:e.target.value}))}/>
-                        <input type="text" placeholder='Enter width of frame' value={formData.width} onChange={e=>setFormData(prev =>({...prev,width:e.target.value}))} />
-                        <input type="text" placeholder='Enter height of frame' value={formData.height} onChange={e=>setFormData(prev =>({...prev,height:e.target.value}))} />
+                        <input type="text" placeholder='Enter alt' value={formData.alt} onChange={e=>setFormData(prev =>({...prev,alt:e.target.value}))}/>
+                        
 
                         <Button type='submit'>Save</Button>
                     </form>

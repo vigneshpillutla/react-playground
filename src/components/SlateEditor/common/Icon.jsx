@@ -1,8 +1,8 @@
 import React from 'react';
 import { MdFormatBold, MdFormatItalic, MdStrikethroughS, MdFormatUnderlined, MdFormatQuote, MdFormatAlignLeft, MdFormatAlignCenter, MdFormatAlignRight, MdFormatListNumbered, MdFormatListBulleted,MdInsertLink,MdVideoLibrary,MdImage,MdAdd} from 'react-icons/md'
-import { BsTypeH1, BsTypeH2, BsTypeH3 } from 'react-icons/bs'
+import { BsTypeH1, BsTypeH2, BsTypeH3, BsCameraVideoFill } from 'react-icons/bs'
 import { FaSuperscript,FaSubscript } from 'react-icons/fa'
-import { AiOutlineTable, AiOutlineInsertRowBelow, AiOutlineInsertRowRight,AiOutlineDelete, AiFillTag, AiOutlineUpload } from 'react-icons/ai'
+import { AiOutlineTable, AiOutlineInsertRowBelow, AiOutlineInsertRowRight,AiOutlineDelete, AiFillTag, AiOutlineUpload, AiOutlineArrowsAlt, AiOutlineInsertRowAbove, AiOutlineInsertRowLeft } from 'react-icons/ai'
 import { SiLatex } from 'react-icons/si'
 const iconList={
     bold:<MdFormatBold size={20}/>,
@@ -26,12 +26,16 @@ const iconList={
     video:<MdVideoLibrary size={20}/>,
     add:<MdAdd size={20}/>,
     table:<AiOutlineTable size={20}/>,
-    row:<AiOutlineInsertRowBelow size={20}/>,
-    column:<AiOutlineInsertRowRight size={20}/>,
-    removeTable:<AiOutlineDelete size={20}/>,
+    insertRowBelow:<AiOutlineInsertRowBelow size={25}/>,
+    insertColumnRight:<AiOutlineInsertRowRight size={25}/>,
+    insertColumnLeft:<AiOutlineInsertRowLeft size={25}/>,
+    insertRowAbove:<AiOutlineInsertRowAbove size={25}/>,
+    trashCan:<AiOutlineDelete size={25}/>,
     addId:<AiFillTag size={20}/>,
     upload:<AiOutlineUpload size = {20}/>,
-    equation:<SiLatex size={20} />
+    equation:<SiLatex size={20} />,
+    resize:<AiOutlineArrowsAlt size={20}/>,
+    videoPlayer:<BsCameraVideoFill size={20}/>
 }
 
 

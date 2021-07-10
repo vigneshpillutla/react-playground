@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { createEditor } from 'slate';
 import { withHistory } from "slate-history";
-import {Slate, Editable, withReact } from 'slate-react';
+import {Slate, Editable, withReact, } from 'slate-react';
 import Toolbar from './Toolbar/Toolbar'
 import { sizeMap, fontFamilyMap } from './utils/SlateUtilityFunctions.js'
 import withLinks from './plugins/withLinks.js'
@@ -10,10 +10,9 @@ import withEmbeds from './plugins/withEmbeds.js'
 import withEquation from './plugins/withEquation.js'
 import './Editor.css'
 import Link from'./Elements/Link/Link'
-import Image from './Elements/Image/Image'
-import Video from './Elements/Video/Video'
+import Image from './Elements/Embed/Image'
+import Video from './Elements/Embed/Video'
 import Equation from './Elements/Equation/Equation'
-import { InlineMath, BlockMath } from 'react-katex';
 
 const Element = (props) =>{
 
@@ -31,9 +30,9 @@ const Element = (props) =>{
         case 'alignLeft':
             return <div style={{listStylePosition:'inside'}} {...attributes} {...element.attr}>{children}</div>
         case 'alignCenter':
-            return <div style={{display:'flex',justifyContent:'center',listStylePosition:'inside'}} {...attributes} {...element.attr}>{children}</div>
+            return <div style={{display:'flex',alignItems:'center',listStylePosition:'inside',flexDirection:'column'}} {...attributes} {...element.attr}>{children}</div>
         case 'alignRight':
-            return <div style={{display:'flex',justifyContent:'flex-end',listStylePosition:'inside'}} {...attributes} {...element.attr}>{children}</div>
+            return <div style={{display:'flex',alignItems:'flex-end',listStylePosition:'inside',flexDirection:'column'}} {...attributes} {...element.attr}>{children}</div>
         case 'list-item':
             return  <li {...attributes} {...element.attr}>{children}</li>
         case 'orderedList':
@@ -42,7 +41,6 @@ const Element = (props) =>{
             return <ul {...attributes}>{children}</ul>
         case 'link':
             return <Link {...props}/>
-       
         case 'table':
             return <table>
                 <tbody {...attributes}>{children}</tbody>
@@ -104,13 +102,14 @@ const Leaf = ({ attributes, children, leaf }) => {
 }
 const SlateEditor = ()=>{
     const editor = useMemo(() => withEquation(withHistory(withEmbeds(withTables(withLinks(withReact(createEditor())))))), []);
-    
     const [value,setValue] = useState([
         {
             type:'paragaph',
             children:[{text:'First line of text in Slate JS. '}],
         },
     ]);
+
+
 
 
     const renderElement = useCallback(props => <Element {...props}/>,[])

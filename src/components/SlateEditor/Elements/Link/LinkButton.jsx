@@ -4,7 +4,7 @@ import { insertLink } from '../../utils/link.js'
 import Button from '../../common/Button'
 import Icon from '../../common/Icon'
 import {isBlockActive} from '../../utils/SlateUtilityFunctions.js'
-import usePopup  from '../../utils/usePopup'
+import usePopup  from '../../utils/customHooks/usePopup'
 import { Transforms } from 'slate'
 
 const LinkButton = (props)=>{

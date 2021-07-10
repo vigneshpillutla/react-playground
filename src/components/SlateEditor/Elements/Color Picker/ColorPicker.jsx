@@ -4,7 +4,8 @@ import './ColorPicker.css'
 import {colors} from './defaultColors.js'
 import { addMarkData,activeMark } from '../../utils/SlateUtilityFunctions.js'
 import { Transforms } from 'slate';
-import usePopup  from '../../utils/usePopup'
+import usePopup  from '../../utils/customHooks/usePopup'
+import { ReactEditor } from 'slate-react';
 
 const logo = {
     color:<MdFormatColorText size={20}/>,
@@ -23,12 +24,15 @@ const ColorPicker = ({format,editor}) =>{
     const changeColor = (e) =>{
         const clickedColor = e.target.getAttribute("data-value");
         selection && Transforms.select(editor,selection)
+        selection && ReactEditor.focus(editor);
 
         addMarkData(editor,{format,value:clickedColor})
         setShowOptions(false);
     }
     const toggleOption = ()=>{
         setSelection(editor.selection);
+        selection && ReactEditor.focus(editor);
+
         setShowOptions(prev => !prev)
     }
     const handleFormSubmit = (e)=>{
@@ -40,6 +44,8 @@ const ColorPicker = ({format,editor}) =>{
         setShowOptions(false);
         setValidHex('');
         setHexValue('');
+        selection && ReactEditor.focus(editor);
+
 
     }
     const handleHexChange = (e)=>{

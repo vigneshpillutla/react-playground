@@ -77,9 +77,9 @@ const withTable = (editor) =>{
               n.type === 'table',
           })
     
-          if (table) {
-            return
-          }
+          // if (table) {
+          //   return
+          // }
         }
     
         insertBreak()

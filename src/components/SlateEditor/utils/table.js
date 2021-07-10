@@ -1,4 +1,4 @@
-import { Transforms, Editor, Range, Element } from 'slate'
+import { Transforms, Editor, Range, Element, Path } from 'slate'
 
 
 export class TableUtil{
@@ -17,8 +17,9 @@ export class TableUtil{
         if(!rows || !columns){
             return;
         }
+        //Creating a 2-d array of blank string as default text for the table
         const cellText = Array.from({ length: rows }, () => Array.from({ length: columns }, () => ""))
-        const newTable = createTableNode(cellText);
+        const newTable = createTableNode(cellText,rows,columns);
         
     
     
@@ -29,24 +30,6 @@ export class TableUtil{
     }
 
 
-    insertCells = (tableNode,path,action)=>{
-        let existingText = Array.from(tableNode.children,(rows) => Array.from(rows.children,(arr) => arr.children[0].text))
-        const columns = existingText[0].length;
-        if(action === 'row'){
-            existingText.push(Array(columns).fill(""));
-        }
-        else{
-            existingText = Array.from(existingText,(item) => {
-                item.push("");
-                return item
-            })
-        }
-        const newTable = createTableNode(existingText)
-        Transforms.insertNodes(this.editor,newTable,{
-            at:path
-        })
-    }
-
     removeTable = () => {
         Transforms.removeNodes(this.editor,{
             match:n=> !Editor.isEditor(n) && Element.isElement(n) && n.type === 'table',
@@ -54,30 +37,61 @@ export class TableUtil{
         })
     }
 
-    insertRow = ()=>{
+    insertRow = (action)=>{
         const {selection} = this.editor;
+
         if(!!selection && Range.isCollapsed(selection)){
             const [tableNode] = Editor.nodes(this.editor,{
-                match:n => !Editor.isEditor(n) && Element.isElement(n) && n.type === 'table',
+                match:n => !Editor.isEditor(n) && Element.isElement(n) && n.type === 'table-row',
             })
             if(tableNode){
-                const [oldTable,path] = tableNode
-                this.removeTable();
-                this.insertCells(oldTable,path,'row')
+                const [[table,tablePath]] = Editor.nodes(this.editor,{
+                    match:n => !Editor.isEditor(n) && Element.isElement(n) && n.type === 'table',
+                })
+                const [,currentRow] = tableNode
+
+                
+                const path = action === 'after' ? Path.next(currentRow) : currentRow;
+
+
+                Transforms.insertNodes(this.editor,createRow(Array(table.columns).fill('')),{
+                    at:path,
+                })
+                Transforms.setNodes(this.editor,{rows:table.rows + 1},
+                    {
+                        at:tablePath
+                });
             }
         }
     }
 
-    insertColumn = ()=>{
+    insertColumn = (action)=>{
         const { selection } = this.editor
         if(!!selection && Range.isCollapsed(selection)){
             const [tableNode] = Editor.nodes(this.editor,{
-                match:n => !Editor.isEditor(n) && Element.isElement(n) && n.type === 'table',
+                match:n => !Editor.isEditor(n) && Element.isElement(n) && n.type === 'table-cell',
             })
             if(tableNode){
-                const [oldTable,path] = tableNode
-                this.removeTable();
-                this.insertCells(oldTable,path,'columns')
+                const [[table,tablePath]] = Editor.nodes(this.editor,{
+                    match:n => !Editor.isEditor(n) && Element.isElement(n) && n.type === 'table',
+                })
+                const [,currentCell] = tableNode
+                const startPath = action === 'after' ? Path.next(currentCell) : currentCell;
+
+                // The last two indices of the path represents the row and column. We need to add one cell to each row starting from the first row
+                startPath[startPath.length - 2] = 0;
+                for(let row = 0;row<table.rows;row++){
+                    Transforms.insertNodes(this.editor,createTableCell(''),{
+                        at:startPath
+                    })
+                    startPath[startPath.length - 2]++
+                }
+
+                Transforms.setNodes(this.editor,{columns:table.columns + 1},
+                    {
+                        at:tablePath
+                });
+
             }
         }
     }
@@ -104,8 +118,13 @@ export const createTableCell = (text)=>{
     }
 }
 
-const createTableNode = (cellText)=>{
+const createTableNode = (cellText,rows,columns)=>{
     const tableChildren = Array.from( cellText,(value) => createRow(value))
-    let tableNode = {type:'table',children:tableChildren}
+    let tableNode = {
+        type:'table',
+        children:tableChildren,
+        rows,
+        columns
+    }
     return tableNode;
 }

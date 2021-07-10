@@ -4,21 +4,23 @@ import {Range} from 'slate'
 import Button from '../common/Button'
 import Icon from '../common/Icon'
 import { toggleBlock, toggleMark, isMarkActive, addMarkData, isBlockActive,activeMark} from '../utils/SlateUtilityFunctions.js'
-import useTable from '../utils/useTable.js'
+import useTable from '../utils/customHooks/useTable.js'
 import defaultToolbarGroups from './toolbarGroups.js'
 import './styles.css'
 import ColorPicker from '../Elements/Color Picker/ColorPicker'
 import LinkButton from '../Elements/Link/LinkButton'
 import Embed from '../Elements/Embed/Embed'
 import Table from '../Elements/Table/Table'
-import InTable from '../Elements/Table/InTable'
 import EquationButton from '../Elements/Equation/EquationButton'
 import Id from '../Elements/ID/Id'
+import TableContextMenu from '../Elements/TableContextMenu/TableContextMenu'
 const Toolbar = ()=>{
     const editor = useSlate();
     const isTable = useTable(editor);
     const [toolbarGroups,setToolbarGroups] = useState(defaultToolbarGroups);
+    
     useEffect(()=>{
+        // Filter out the groups which are not allowed to be inserted when a table is in focus.
         let filteredGroups = [...defaultToolbarGroups]
         if(isTable){
             filteredGroups = toolbarGroups.map(grp =>(
@@ -31,6 +33,7 @@ const Toolbar = ()=>{
         setToolbarGroups(filteredGroups);
          // eslint-disable-next-line react-hooks/exhaustive-deps
     },[isTable])
+
     const BlockButton = ({format}) =>{
         return (
             <Button active={isBlockActive(editor,format)} format={format} onMouseDown={
@@ -95,14 +98,12 @@ const Toolbar = ()=>{
                                             return <ColorPicker key={element.id} activeMark={activeMark} format={element.format} editor={editor}/>
                                         case 'table':
                                             return <Table key={element.id} editor={editor}/>
-                                        case 'inTable':
-                                            return isTable ? <InTable key={element.id} editor={editor}/> : null
                                         case 'id':
                                             return <Id editor={editor}/>
                                         case 'equation':
                                             return <EquationButton editor={editor}/>
                                         default:
-                                            return <button>Invalid Button</button>
+                                            return null
                                     }
                                 }
                             )
@@ -110,6 +111,7 @@ const Toolbar = ()=>{
                     </span>    
                 )
             }
+            <TableContextMenu editor={editor}/>
         </div>
     )
 }

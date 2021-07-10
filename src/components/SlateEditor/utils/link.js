@@ -20,7 +20,7 @@ export const insertLink = (editor,{url,showInNewTab})=>{
             removeLink(editor);
         }
 
-        //for image nodes, will be implemented later
+        
         if(editor.isVoid(parent)){
             Transforms.insertNodes(editor, 
                 {type:'paragraph',children:[link]},

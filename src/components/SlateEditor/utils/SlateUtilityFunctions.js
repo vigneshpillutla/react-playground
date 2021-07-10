@@ -1,10 +1,12 @@
 import { Editor, Transforms,Element as SlateElement} from 'slate'
-import useTable from '../utils/useTable.js'
 import {useSlateStatic} from 'slate-react'
-import {createTableCell} from '../utils/table.js'
+
 
 const alignment = ['alignLeft','alignRight','alignCenter']
 const list_types = ['orderedList','unorderedList']
+
+
+
 export const sizeMap = {
     small:'0.75em',
     normal:'1em',

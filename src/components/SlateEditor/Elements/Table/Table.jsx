@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import Icon from '../../common/Icon'
-import usePopup from '../../utils/usePopup'
+import usePopup from '../../utils/customHooks/usePopup'
 import { Transforms } from 'slate';
 import { TableUtil } from '../../utils/table.js'
 import './Table.css'
