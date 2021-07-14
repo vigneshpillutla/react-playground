@@ -4,19 +4,22 @@ import {Range} from 'slate'
 import Button from '../common/Button'
 import Icon from '../common/Icon'
 import { toggleBlock, toggleMark, isMarkActive, addMarkData, isBlockActive,activeMark} from '../utils/SlateUtilityFunctions.js'
-import useTable from '../utils/customHooks/useTable.js'
+import useFormat from '../utils/customHooks/useFormat.js'
 import defaultToolbarGroups from './toolbarGroups.js'
 import './styles.css'
 import ColorPicker from '../Elements/Color Picker/ColorPicker'
 import LinkButton from '../Elements/Link/LinkButton'
 import Embed from '../Elements/Embed/Embed'
-import Table from '../Elements/Table/Table'
+import TableSelector from '../Elements/Table/TableSelector'
 import EquationButton from '../Elements/Equation/EquationButton'
 import Id from '../Elements/ID/Id'
 import TableContextMenu from '../Elements/TableContextMenu/TableContextMenu'
-const Toolbar = ()=>{
+import CodeToTextButton from '../Elements/CodeToText/CodeToTextButton'
+import HtmlContextMenu from '../Elements/CodeToText/HtmlContextMenu';
+const Toolbar = (props)=>{
+    const {handleCodeToText} = props
     const editor = useSlate();
-    const isTable = useTable(editor);
+    const isTable = useFormat(editor,'table');
     const [toolbarGroups,setToolbarGroups] = useState(defaultToolbarGroups);
     
     useEffect(()=>{
@@ -25,7 +28,8 @@ const Toolbar = ()=>{
         if(isTable){
             filteredGroups = toolbarGroups.map(grp =>(
                 grp.filter(element => (
-                    !['table'].includes(element.type)
+                    //groups that are not supported inside the table
+                    !['codeToText'].includes(element.type)
                 ))
             ))
             filteredGroups = filteredGroups.filter(elem => elem.length)
@@ -97,11 +101,13 @@ const Toolbar = ()=>{
                                         case 'color-picker':
                                             return <ColorPicker key={element.id} activeMark={activeMark} format={element.format} editor={editor}/>
                                         case 'table':
-                                            return <Table key={element.id} editor={editor}/>
+                                            return <TableSelector key={element.id} editor={editor}/>
                                         case 'id':
                                             return <Id editor={editor}/>
                                         case 'equation':
                                             return <EquationButton editor={editor}/>
+                                        case 'codeToText':
+                                            return <CodeToTextButton handleButtonClick={handleCodeToText}/>
                                         default:
                                             return null
                                     }
@@ -112,6 +118,7 @@ const Toolbar = ()=>{
                 )
             }
             <TableContextMenu editor={editor}/>
+            <HtmlContextMenu editor={editor} handleCodeToText={handleCodeToText} />
         </div>
     )
 }

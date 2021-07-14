@@ -1,8 +1,8 @@
 import React from 'react';
-import { MdFormatBold, MdFormatItalic, MdStrikethroughS, MdFormatUnderlined, MdFormatQuote, MdFormatAlignLeft, MdFormatAlignCenter, MdFormatAlignRight, MdFormatListNumbered, MdFormatListBulleted,MdInsertLink,MdVideoLibrary,MdImage,MdAdd} from 'react-icons/md'
+import { MdFormatBold, MdFormatItalic, MdStrikethroughS, MdFormatUnderlined, MdFormatQuote, MdFormatAlignLeft, MdFormatAlignCenter, MdFormatAlignRight, MdFormatListNumbered, MdFormatListBulleted,MdInsertLink,MdVideoLibrary,MdImage,MdAdd,MdKeyboardArrowRight, MdArrowForward} from 'react-icons/md'
 import { BsTypeH1, BsTypeH2, BsTypeH3, BsCameraVideoFill } from 'react-icons/bs'
 import { FaSuperscript,FaSubscript } from 'react-icons/fa'
-import { AiOutlineTable, AiOutlineInsertRowBelow, AiOutlineInsertRowRight,AiOutlineDelete, AiFillTag, AiOutlineUpload, AiOutlineArrowsAlt, AiOutlineInsertRowAbove, AiOutlineInsertRowLeft } from 'react-icons/ai'
+import { AiFillEdit,AiOutlineTable, AiOutlineInsertRowBelow, AiOutlineInsertRowRight,AiOutlineDelete, AiFillTag, AiOutlineUpload, AiOutlineArrowsAlt, AiOutlineInsertRowAbove, AiOutlineInsertRowLeft,AiFillHtml5 } from 'react-icons/ai'
 import { SiLatex } from 'react-icons/si'
 const iconList={
     bold:<MdFormatBold size={20}/>,
@@ -35,7 +35,10 @@ const iconList={
     upload:<AiOutlineUpload size = {20}/>,
     equation:<SiLatex size={20} />,
     resize:<AiOutlineArrowsAlt size={20}/>,
-    videoPlayer:<BsCameraVideoFill size={20}/>
+    videoPlayer:<BsCameraVideoFill size={20}/>,
+    insertHtml:<AiFillHtml5 size={20}/>,
+    arrowRight:<MdArrowForward size={35}/>,
+    pen:<AiFillEdit size={20}/>
 }
 
 

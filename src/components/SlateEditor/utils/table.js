@@ -33,7 +33,7 @@ export class TableUtil{
     removeTable = () => {
         Transforms.removeNodes(this.editor,{
             match:n=> !Editor.isEditor(n) && Element.isElement(n) && n.type === 'table',
-            mode:'highest'
+            // mode:'highest'
         })
     }
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-
+//This hook returns if the click was inside the popUp ref or outside it .
 function usePopup(popupRef) {
     const [showPopup,setShowPopup] = useState(false);
     

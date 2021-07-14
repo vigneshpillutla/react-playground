@@ -66,24 +66,7 @@ const withTable = (editor) =>{
     
         deleteForward(unit)
       }
-    
-      editor.insertBreak = () => {
-        const { selection } = editor
-        if (selection) {
-          const [table] = Editor.nodes(editor, {
-            match: n =>
-              !Editor.isEditor(n) &&
-              Element.isElement(n) &&
-              n.type === 'table',
-          })
-    
-          // if (table) {
-          //   return
-          // }
-        }
-    
-        insertBreak()
-      }
+
     return editor;
 }
 

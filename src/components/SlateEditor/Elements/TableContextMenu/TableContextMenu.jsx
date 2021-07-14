@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import useTable from '../../utils/customHooks/useTable.js';
+import useContextMenu from '../../utils/customHooks/useContextMenu.js';
 import Icon from '../../common/Icon'
 import './styles.css'
 import { TableUtil } from '../../utils/table.js'
@@ -9,11 +9,7 @@ import { ReactEditor } from 'slate-react';
 const TableContextMenu = (props)=>{
     const {editor} = props;
     const [selection,setSelection] = useState()
-    const [showMenu,setShowMenu] = useState(false);
-    const [menuLocation,setMenuLocation] = useState({
-        top:'0px',
-        left:'0px'
-    });
+    const [showMenu,{top,left}] = useContextMenu(editor,'table',setSelection);
     const table = new TableUtil(editor);
 
 
@@ -58,21 +54,8 @@ const TableContextMenu = (props)=>{
             }
         }
     ]
-    const isTable = useTable(editor);
 
-    const handleContextMenu = (e) => {
-        if(!isTable) return;
-        setSelection(editor.selection);
-        e.preventDefault();
-        setShowMenu(true);
-        // console.log(e);
-        const xPos = e.pageX  + "px";
-        const yPos = e.pageY  + "px";
-        setMenuLocation({
-            top:yPos,
-            left:xPos
-        })
-    }
+
     const handleInsert = ({type,position}) =>{
         Transforms.select(editor,selection)
         switch(type){
@@ -91,22 +74,10 @@ const TableContextMenu = (props)=>{
         }
         ReactEditor.focus(editor);
     }
-    const handleClick = ()=>{
-        setShowMenu(false);
-    }
-    useEffect(()=>{
-        document.addEventListener('click',handleClick);
-        document.addEventListener('contextmenu',handleContextMenu);
-
-        return ()=>{
-            document.removeEventListener('click',handleClick);
-            document.removeEventListener('contextmenu',handleContextMenu);
-        }
-    },[isTable])
 
     return (
             showMenu && 
-            <div className='contextMenu' style={{top:menuLocation.top,left:menuLocation.left}}>
+            <div className='contextMenu' style={{top,left}}>
                 {
                     menu.map(({icon,text,action},index) => 
                         <div className='menuOption' key={index} onClick={() => handleInsert(action)}>
